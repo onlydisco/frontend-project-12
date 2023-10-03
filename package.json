@@ -1,0 +1,21 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run build --prefix frontend",
+    "start": "npx start-server -s ./frontend/build",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "cd frontend && npm ci"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/onlydisco/frontend-project-12.git"
+  },
+  "author": "Sergey Mukhin",
+  "license": "ISC",
+  "dependencies": {
+    "@hexlet/chat-server": "^1.1.8"
+  }
+}
