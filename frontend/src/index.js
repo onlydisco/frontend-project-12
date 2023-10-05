@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import App from './App.jsx';
 
-import './assets/styles.scss';
+import './assets/styles/styles.scss';
 
 const root = ReactDOM.createRoot(document.getElementById('chat'));
 
