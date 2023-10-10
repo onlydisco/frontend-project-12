@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import Header from './Header';
 
 const Layout = () => (
-  <div className="d-flex flex-column h-100 h-100">
+  <div className="h-100 d-flex flex-column">
     <Header />
     <main className="h-100">
       <Outlet />

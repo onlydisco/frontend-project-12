@@ -1,4 +1,6 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
@@ -6,7 +8,8 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Button from 'react-bootstrap/Button';
-import { Link } from 'react-router-dom';
+
+import useAuth from '../hooks/useAuth.js';
 
 const LoginSchema = Yup.object().shape({
   username: Yup.string().required('Username required'),
@@ -14,7 +17,16 @@ const LoginSchema = Yup.object().shape({
 });
 
 const LoginForm = () => {
+  const [authFailed, setAuthFailed] = useState(false);
+  const navigate = useNavigate();
   const usernameInput = useRef(null);
+  const auth = useAuth();
+  console.log('LoginForm -> auth:', auth);
+
+  useEffect(() => {
+    usernameInput.current.focus();
+  }, []);
+
   const formik = useFormik({
     initialValues: {
       username: '',
@@ -23,10 +35,30 @@ const LoginForm = () => {
     validateOnBlur: false,
     validateOnChange: false,
     validationSchema: LoginSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       formik.validateForm();
-      usernameInput.current.focus();
-      console.log(values);
+
+      setAuthFailed(false);
+
+      try {
+        const response = await axios.post('/api/v1/login', values);
+
+        localStorage.setItem(
+          'userId',
+          JSON.stringify({ token: response.data.token }),
+        );
+
+        auth.logIn();
+
+        navigate('/');
+      } catch (error) {
+        formik.setSubmitting(false);
+        if (error.isAxiosError && error.response.status === 401) {
+          setAuthFailed(true);
+          return;
+        }
+        throw error;
+      }
     },
   });
 
@@ -47,7 +79,7 @@ const LoginForm = () => {
                 ref={usernameInput}
                 onChange={formik.handleChange}
                 value={formik.values.username}
-                isInvalid={Object.keys(formik.errors).length > 0}
+                isInvalid={authFailed}
               />
             </FloatingLabel>
           </Form.Group>
@@ -62,7 +94,7 @@ const LoginForm = () => {
                 required
                 onChange={formik.handleChange}
                 value={formik.values.password}
-                isInvalid={Object.keys(formik.errors).length > 0}
+                isInvalid={authFailed}
               />
               <Form.Control.Feedback type="invalid">
                 Неверное имя пользователя или пароль
@@ -81,8 +113,7 @@ const LoginForm = () => {
       </Card.Body>
       <Card.Footer className="p-4">
         <div className="text-center">
-          <span>Нет аккаунта?</span>
-          {' '}
+          <span>Нет аккаунта? </span>
           <Link to="/signup">Регистрация</Link>
         </div>
       </Card.Footer>

@@ -1,7 +1,7 @@
-import Layout from './Components/Layout.jsx';
-import ChatPage from './Pages/ChatPage.jsx';
-import LoginPage from './Pages/LoginPage.jsx';
-import NotFoundPage from './Pages/NotFoundPage.jsx';
+import Layout from './components/Layout.jsx';
+import ChatPage from './pages/ChatPage.jsx';
+import LoginPage from './pages/LoginPage.jsx';
+import NotFoundPage from './pages/NotFoundPage.jsx';
 
 const routes = [
   {
