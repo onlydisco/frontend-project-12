@@ -1,4 +1,5 @@
 import Layout from './components/Layout.jsx';
+import PrivateRoute from './components/PrivateRoute.jsx';
 import ChatPage from './pages/ChatPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
@@ -10,7 +11,11 @@ const routes = [
     children: [
       {
         index: true,
-        element: <ChatPage />,
+        element: (
+          <PrivateRoute>
+            <ChatPage />
+          </PrivateRoute>
+        ),
       },
       {
         path: 'login',

@@ -1,12 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AuthContext from '../contexts/AuthContext.js';
 
 const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const user = JSON.parse(localStorage.getItem('user'));
+  const navigate = useNavigate();
+  const [loggedIn, setLoggedIn] = useState(!!user?.token);
 
-  const logIn = () => setLoggedIn(true);
+  useEffect(() => {
+    if (!loggedIn) {
+      navigate('/login');
+    }
+  }, [loggedIn]);
+
+  const logIn = (token) => {
+    if (token) {
+      localStorage.setItem('user', JSON.stringify({ token }));
+      setLoggedIn(true);
+      navigate('/');
+    }
+  };
+
   const logOut = () => {
-    localStorage.removeItem('userId');
+    localStorage.removeItem('user');
     setLoggedIn(false);
   };
 

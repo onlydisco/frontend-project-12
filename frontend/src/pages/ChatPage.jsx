@@ -1,18 +1,24 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import Container from 'react-bootstrap/Container';
-import useAuth from '../hooks/useAuth';
+import getAuthToken from '../helpers/getAuthToken';
+
+const fetchData = async () => {
+  try {
+    const response = await axios.get('/api/v1/data', {
+      headers: {
+        Authorization: `Bearer ${getAuthToken()}`,
+      },
+    });
+    console.log('fetchData -> response:', response);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const ChatPage = () => {
-  const navigate = useNavigate();
-  const auth = useAuth();
-  console.log('ChatPage -> auth:', auth);
-
   useEffect(() => {
-    const userId = JSON.parse(localStorage.getItem('userId'));
-    if (!userId || !userId.token) {
-      navigate('/login');
-    }
+    fetchData();
   }, []);
 
   return <Container fluid>ChatPage</Container>;

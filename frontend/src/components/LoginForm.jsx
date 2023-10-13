@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -18,10 +18,8 @@ const LoginSchema = Yup.object().shape({
 
 const LoginForm = () => {
   const [authFailed, setAuthFailed] = useState(false);
-  const navigate = useNavigate();
   const usernameInput = useRef(null);
   const auth = useAuth();
-  console.log('LoginForm -> auth:', auth);
 
   useEffect(() => {
     usernameInput.current.focus();
@@ -42,22 +40,15 @@ const LoginForm = () => {
 
       try {
         const response = await axios.post('/api/v1/login', values);
-
-        localStorage.setItem(
-          'userId',
-          JSON.stringify({ token: response.data.token }),
-        );
-
-        auth.logIn();
-
-        navigate('/');
+        auth.logIn(response?.data?.token);
       } catch (error) {
         formik.setSubmitting(false);
         if (error.isAxiosError && error.response.status === 401) {
           setAuthFailed(true);
           return;
         }
-        throw error;
+
+        console.log(error);
       }
     },
   });
