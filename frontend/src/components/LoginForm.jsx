@@ -47,14 +47,13 @@ const LoginForm = () => {
           setAuthFailed(true);
           return;
         }
-
         console.log(error);
       }
     },
   });
 
   return (
-    <Card>
+    <Card className="rounded shadow">
       <Card.Body className="p-5">
         <Form onSubmit={formik.handleSubmit}>
           <h1 className="text-center mb-4">Войти</h1>
