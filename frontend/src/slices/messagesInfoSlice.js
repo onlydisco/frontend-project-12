@@ -6,48 +6,52 @@ import {
 
 const messagesAdapter = createEntityAdapter();
 
-// const initialState = {
-//   messages: messagesAdapter.getInitialState(),
-// };
-
 const initialState = {
-  messages: {
-    ids: [5, 6, 7, 8],
-    entities: {
-      5: {
-        body: 'Сообщение для 1 канала',
-        channelId: 1,
-        username: 'admin',
-        id: 5,
-      },
-      6: {
-        body: 'Сообщение для 1 канала',
-        channelId: 1,
-        username: 'admin',
-        id: 6,
-      },
-      7: {
-        body: 'Сообщение для 2 канала',
-        channelId: 2,
-        username: 'admin',
-        id: 5,
-      },
-      8: {
-        body: 'Сообщение для 2 канала',
-        channelId: 2,
-        username: 'admin',
-        id: 6,
-      },
-    },
-  },
+  messages: messagesAdapter.getInitialState(),
 };
+
+// const initialState = {
+//   messages: {
+//     ids: [5, 6, 7, 8],
+//     entities: {
+//       5: {
+//         body: 'Сообщение для 1 канала',
+//         channelId: 1,
+//         username: 'admin',
+//         id: 5,
+//       },
+//       6: {
+//         body: 'Сообщение для 1 канала',
+//         channelId: 1,
+//         username: 'admin',
+//         id: 6,
+//       },
+//       7: {
+//         body: 'Сообщение для 2 канала',
+//         channelId: 2,
+//         username: 'admin',
+//         id: 5,
+//       },
+//       8: {
+//         body: 'Сообщение для 2 канала',
+//         channelId: 2,
+//         username: 'admin',
+//         id: 6,
+//       },
+//     },
+//   },
+// };
 
 const messagesInfoSlice = createSlice({
   name: 'messagesInfo',
   initialState,
   reducers: {
-    addMessage: messagesAdapter.addOne,
-    addMessages: messagesAdapter.addMany,
+    addMessage: (state, { payload }) => {
+      messagesAdapter.addOne(state.messages, payload);
+    },
+    addMessages: (state, { payload }) => {
+      messagesAdapter.addMany(state.messages, payload);
+    },
   },
 });
 
