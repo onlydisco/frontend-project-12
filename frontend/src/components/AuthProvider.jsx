@@ -13,9 +13,9 @@ const AuthProvider = ({ children }) => {
     }
   }, [loggedIn]);
 
-  const logIn = (token) => {
+  const logIn = (token, username) => {
     if (token) {
-      localStorage.setItem('user', JSON.stringify({ token }));
+      localStorage.setItem('user', JSON.stringify({ token, username }));
       setLoggedIn(true);
       navigate('/');
     }

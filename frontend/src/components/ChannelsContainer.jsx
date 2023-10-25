@@ -1,14 +1,21 @@
 import React from 'react';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-import { useSelector } from 'react-redux';
-import { selectors as channelsSelectors } from '../slices/channelsSlice.js';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  actions as channelsActions,
+  channelsSelectors,
+  selectCurrentChannelId,
+} from '../slices/channelsInfoSlice.js';
 
-const ChannelsContainer = ({ currentChannel, setCurrentChannel }) => {
+const ChannelsContainer = () => {
+  const dispatch = useDispatch();
+
   const channels = useSelector(channelsSelectors.selectAll);
+  const currentChannelId = useSelector(selectCurrentChannelId);
 
-  const handleClickChannel = (channel) => {
-    setCurrentChannel(channel);
+  const handleClickChannel = (channelId) => {
+    dispatch(channelsActions.setCurrentChannelId(channelId));
   };
 
   return (
@@ -38,12 +45,12 @@ const ChannelsContainer = ({ currentChannel, setCurrentChannel }) => {
         className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block"
         id="channels-box"
       >
-        {channels.map((channel) => (
+        {channels?.map((channel) => (
           <li className="nav-item w-100" key={channel.id}>
             <Button
               className="w-100 rounded-0 text-start"
-              variant={currentChannel.id === channel.id && 'secondary'}
-              onClick={() => handleClickChannel(channel)}
+              variant={currentChannelId === channel.id && 'primary'}
+              onClick={() => handleClickChannel(channel.id)}
             >
               <span className="me-1">#</span>
               {channel.name}

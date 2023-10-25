@@ -38,3 +38,4 @@ rules:
   testing-library/no-debug: 0
   react/jsx-filename-extension: [1, { "extensions": [".js", ".jsx"] }]
   react-hooks/exhaustive-deps: 0
+  no-param-reassign: 0

@@ -18,8 +18,8 @@ const LoginSchema = Yup.object().shape({
 
 const LoginForm = () => {
   const [authFailed, setAuthFailed] = useState(false);
-  const usernameInput = useRef(null);
   const auth = useAuth();
+  const usernameInput = useRef(null);
 
   useEffect(() => {
     usernameInput.current.focus();
@@ -33,16 +33,15 @@ const LoginForm = () => {
     validateOnBlur: false,
     validateOnChange: false,
     validationSchema: LoginSchema,
-    onSubmit: async (values) => {
-      formik.validateForm();
-
+    onSubmit: async (values, { validateForm, setSubmitting }) => {
+      setSubmitting(true);
+      validateForm();
       setAuthFailed(false);
-
       try {
         const response = await axios.post('/api/v1/login', values);
-        auth.logIn(response?.data?.token);
+        auth.logIn(response?.data?.token, values.username);
       } catch (error) {
-        formik.setSubmitting(false);
+        setSubmitting(false);
         if (error.isAxiosError && error.response.status === 401) {
           setAuthFailed(true);
           return;
@@ -96,6 +95,7 @@ const LoginForm = () => {
             className="w-100 mb-3"
             variant="outline-primary"
             type="submit"
+            disabled={formik.isSubmitting}
           >
             Войти
           </Button>

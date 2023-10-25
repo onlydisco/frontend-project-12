@@ -1,37 +1,67 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
+import { useFormik } from 'formik';
+import { useSelector } from 'react-redux';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import io from 'socket.io-client';
+import { selectCurrentChannelId } from '../slices/channelsInfoSlice.js';
+import { getUsername } from '../helpers/getAuthData';
+
+const socket = io.connect();
 
 const MessagesForm = () => {
-  const [message, setMessage] = useState('');
+  const currentChannelId = useSelector(selectCurrentChannelId);
+
   const messageInput = useRef(null);
 
   useEffect(() => {
     messageInput.current.focus();
   }, []);
 
-  const handleMessage = (e) => {
-    setMessage(e.target.value);
-  };
+  const formik = useFormik({
+    initialValues: {
+      body: '',
+    },
+    onSubmit: async (values, { resetForm, setSubmitting }) => {
+      setSubmitting(true);
+      try {
+        const newMessage = {
+          body: values.body,
+          username: getUsername(),
+          channelId: currentChannelId,
+        };
+        await socket.emit('newMessage', newMessage);
+        messageInput.current.focus();
+        resetForm();
+      } catch (error) {
+        setSubmitting(false);
+        console.log(error);
+      }
+    },
+  });
 
   return (
-    <Form className="py-1 border rounded-2" noValidate>
+    <Form
+      className="py-1 border rounded-2"
+      onSubmit={formik.handleSubmit}
+      noValidate
+    >
       <InputGroup>
         <Form.Control
           className="border-0 p-0 ps-2"
-          name="message"
+          name="body"
           aria-label="Новое сообщение"
           placeholder="Введите сообщение..."
-          value={message}
-          onChange={handleMessage}
+          onChange={formik.handleChange}
+          value={formik.values.body}
           ref={messageInput}
         />
         <Button
           className="border-0 text-primary"
           variant="group-vertical"
           type="submit"
-          disabled={!message}
+          disabled={formik.isSubmitting || !formik.values.body}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -51,4 +81,5 @@ const MessagesForm = () => {
     </Form>
   );
 };
+
 export default MessagesForm;
