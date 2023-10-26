@@ -4,20 +4,24 @@ import { useSelector, useDispatch } from 'react-redux';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import io from 'socket.io-client';
+import socket from '../socket.js';
 import { selectCurrentChannelId } from '../slices/channelsInfoSlice.js';
 import { actions as messagesActions } from '../slices/messagesInfoSlice.js';
 import { getUsername } from '../helpers/getAuthData';
-
-const socket = io.connect();
 
 const MessagesForm = () => {
   const dispatch = useDispatch();
   const currentChannelId = useSelector(selectCurrentChannelId);
 
-  socket.on('newMessage', (messageWithId) => {
-    dispatch(messagesActions.addMessage(messageWithId));
-  });
+  useEffect(() => {
+    socket.on('newMessage', (messageWithId) => {
+      dispatch(messagesActions.addMessage(messageWithId));
+    });
+
+    return () => {
+      socket.off('newMessage');
+    };
+  }, []);
 
   const messageInput = useRef(null);
 
@@ -38,12 +42,11 @@ const MessagesForm = () => {
           channelId: currentChannelId,
         };
         await socket.emit('newMessage', newMessage);
-
         messageInput.current.focus();
         resetForm();
       } catch (error) {
         setSubmitting(false);
-        console.log(error);
+        console.log('erorrerer', error);
       }
     },
   });
