@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,15 +7,37 @@ import {
   channelsSelectors,
   selectCurrentChannelId,
 } from '../slices/channelsInfoSlice.js';
+import {
+  actions as modalActions,
+  selectOpenModal,
+} from '../slices/modalSlice.js';
+import Modal from './modals/Modal.jsx';
+import socket from '../socket.js';
 
 const ChannelsContainer = () => {
   const dispatch = useDispatch();
-
+  const modalIsOpened = useSelector(selectOpenModal);
   const channels = useSelector(channelsSelectors.selectAll);
   const currentChannelId = useSelector(selectCurrentChannelId);
 
-  const handleClickChannel = (channelId) => {
+  const handleActiveChannel = (channelId) => {
     dispatch(channelsActions.setCurrentChannelId(channelId));
+  };
+
+  useEffect(() => {
+    socket.on('newChannel', (channelWithId) => {
+      dispatch(channelsActions.setCurrentChannelId(channelWithId.id));
+      dispatch(channelsActions.addChannel(channelWithId));
+    });
+
+    return () => {
+      socket.off('newChannel');
+    };
+  }, []);
+
+  const handleAddModal = () => {
+    dispatch(modalActions.showModal(true));
+    dispatch(modalActions.setModalType('addChannel'));
   };
 
   return (
@@ -26,7 +48,11 @@ const ChannelsContainer = () => {
     >
       <div className="d-flex justify-content-between px-3 py-4 mt-1 mb-2">
         <b>Каналы</b>
-        <Button className="p-0 text-primary" variant="group-vertical">
+        <Button
+          className="p-0 text-primary"
+          variant="group-vertical"
+          onClick={handleAddModal}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"
@@ -50,7 +76,7 @@ const ChannelsContainer = () => {
             <Button
               className="w-100 rounded-0 text-start"
               variant={currentChannelId === channel.id && 'primary'}
-              onClick={() => handleClickChannel(channel.id)}
+              onClick={() => handleActiveChannel(channel.id)}
             >
               <span className="me-1">#</span>
               {channel.name}
@@ -58,6 +84,7 @@ const ChannelsContainer = () => {
           </li>
         ))}
       </ul>
+      {modalIsOpened && <Modal />}
     </Col>
   );
 };

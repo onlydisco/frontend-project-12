@@ -46,7 +46,7 @@ const MessagesForm = () => {
         resetForm();
       } catch (error) {
         setSubmitting(false);
-        console.log('erorrerer', error);
+        console.log(error);
       }
     },
   });
