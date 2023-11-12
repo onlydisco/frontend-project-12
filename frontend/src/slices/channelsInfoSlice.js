@@ -24,6 +24,9 @@ const channelsInfoSlice = createSlice({
     setCurrentChannelId: (state, { payload }) => {
       state.currentChannelId = payload;
     },
+    renameChannel: (state, { payload }) => {
+      channelsAdapter.updateOne(state.channels, payload);
+    },
   },
 });
 

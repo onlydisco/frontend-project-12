@@ -27,7 +27,7 @@ const MessagesForm = () => {
 
   useEffect(() => {
     messageInput.current.focus();
-  }, []);
+  }, [currentChannelId]);
 
   const formik = useFormik({
     initialValues: {

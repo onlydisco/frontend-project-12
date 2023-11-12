@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Dropdown from 'react-bootstrap/Dropdown';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   actions as channelsActions,
@@ -30,14 +32,27 @@ const ChannelsContainer = () => {
       dispatch(channelsActions.addChannel(channelWithId));
     });
 
+    socket.on('renameChannel', (channel) => {
+      dispatch(
+        channelsActions.renameChannel({ id: channel.id, changes: channel }),
+      );
+    });
+
     return () => {
       socket.off('newChannel');
+      socket.off('renameChannel');
     };
   }, []);
 
   const handleAddModal = () => {
     dispatch(modalActions.showModal(true));
     dispatch(modalActions.setModalType('addChannel'));
+  };
+
+  const handleRenameModal = (channelId) => {
+    dispatch(modalActions.showModal(true));
+    dispatch(modalActions.setModalType('renameChannel'));
+    dispatch(modalActions.setModalForChannelId(channelId));
   };
 
   return (
@@ -73,14 +88,49 @@ const ChannelsContainer = () => {
       >
         {channels?.map((channel) => (
           <li className="nav-item w-100" key={channel.id}>
-            <Button
-              className="w-100 rounded-0 text-start"
-              variant={currentChannelId === channel.id && 'primary'}
-              onClick={() => handleActiveChannel(channel.id)}
-            >
-              <span className="me-1">#</span>
-              {channel.name}
-            </Button>
+            {channel.removable ? (
+              <Dropdown
+                as={ButtonGroup}
+                className="d-flex"
+                onClick={() => handleActiveChannel(channel.id)}
+              >
+                <Button
+                  className="w-100 rounded-0 text-start text-truncate"
+                  variant={currentChannelId === channel.id && 'primary'}
+                  onClick={() => handleActiveChannel(channel.id)}
+                >
+                  <span className="me-1">#</span>
+                  {channel.name}
+                </Button>
+                <Dropdown.Toggle
+                  className="flex-grow-0 rounded-0"
+                  variant={currentChannelId === channel.id && 'primary'}
+                  id="dropdown-split-basic"
+                  split
+                >
+                  <span className="visually-hidden">Управление каналом</span>
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item href="#">Удалить</Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() => handleRenameModal(channel.id)}
+                    href="#"
+                  >
+                    Переименовать
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            ) : (
+              <Button
+                className="w-100 rounded-0 text-start text-truncate"
+                variant={currentChannelId === channel.id && 'primary'}
+                onClick={() => handleActiveChannel(channel.id)}
+              >
+                <span className="me-1">#</span>
+                {channel.name}
+              </Button>
+            )}
           </li>
         ))}
       </ul>
