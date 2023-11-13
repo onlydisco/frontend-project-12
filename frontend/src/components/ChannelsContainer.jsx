@@ -38,9 +38,15 @@ const ChannelsContainer = () => {
       );
     });
 
+    socket.on('removeChannel', (data) => {
+      dispatch(channelsActions.removeChannel(data.id));
+      dispatch(channelsActions.setCurrentChannelId(1));
+    });
+
     return () => {
       socket.off('newChannel');
       socket.off('renameChannel');
+      socket.off('removeChannel');
     };
   }, []);
 
@@ -52,6 +58,12 @@ const ChannelsContainer = () => {
   const handleRenameModal = (channelId) => {
     dispatch(modalActions.showModal(true));
     dispatch(modalActions.setModalType('renameChannel'));
+    dispatch(modalActions.setModalForChannelId(channelId));
+  };
+
+  const handleRemoveModal = (channelId) => {
+    dispatch(modalActions.showModal(true));
+    dispatch(modalActions.setModalType('removeChannel'));
     dispatch(modalActions.setModalForChannelId(channelId));
   };
 
@@ -112,7 +124,12 @@ const ChannelsContainer = () => {
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                  <Dropdown.Item href="#">Удалить</Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() => handleRemoveModal(channel.id)}
+                    href="#"
+                  >
+                    Удалить
+                  </Dropdown.Item>
                   <Dropdown.Item
                     onClick={() => handleRenameModal(channel.id)}
                     href="#"

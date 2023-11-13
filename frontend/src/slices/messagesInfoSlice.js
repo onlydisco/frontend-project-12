@@ -3,44 +3,13 @@ import {
   createEntityAdapter,
   createSelector,
 } from '@reduxjs/toolkit';
+import { actions as channelActions } from './channelsInfoSlice.js';
 
 const messagesAdapter = createEntityAdapter();
 
 const initialState = {
   messages: messagesAdapter.getInitialState(),
 };
-
-// const initialState = {
-//   messages: {
-//     ids: [5, 6, 7, 8],
-//     entities: {
-//       5: {
-//         body: 'Сообщение для 1 канала',
-//         channelId: 1,
-//         username: 'admin',
-//         id: 5,
-//       },
-//       6: {
-//         body: 'Сообщение для 1 канала',
-//         channelId: 1,
-//         username: 'admin',
-//         id: 6,
-//       },
-//       7: {
-//         body: 'Сообщение для 2 канала',
-//         channelId: 2,
-//         username: 'admin',
-//         id: 5,
-//       },
-//       8: {
-//         body: 'Сообщение для 2 канала',
-//         channelId: 2,
-//         username: 'admin',
-//         id: 6,
-//       },
-//     },
-//   },
-// };
 
 const messagesInfoSlice = createSlice({
   name: 'messagesInfo',
@@ -52,6 +21,14 @@ const messagesInfoSlice = createSlice({
     addMessages: (state, { payload }) => {
       messagesAdapter.addMany(state.messages, payload);
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(channelActions.removeChannel, (state, { payload }) => {
+      const restMessages = Object.values(state.messages.entities).filter(
+        (message) => message.channelId !== payload,
+      );
+      messagesAdapter.setAll(state.messages, restMessages);
+    });
   },
 });
 

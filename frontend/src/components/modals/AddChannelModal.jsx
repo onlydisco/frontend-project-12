@@ -17,7 +17,7 @@ const AddChannelSchema = (channelsNames) => Yup.object().shape({
     .notOneOf(channelsNames, 'Must be unique'),
 });
 
-const AddChanelModal = () => {
+const AddChannelModal = () => {
   const dispatch = useDispatch();
   const channels = useSelector(channelsSelectors.selectEntities);
   const channelsNames = Object.values(channels).map((channel) => channel.name);
@@ -110,4 +110,4 @@ const AddChanelModal = () => {
   );
 };
 
-export default AddChanelModal;
+export default AddChannelModal;
