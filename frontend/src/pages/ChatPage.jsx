@@ -5,7 +5,7 @@ import Row from 'react-bootstrap/Row';
 import { useDispatch } from 'react-redux';
 import { actions as channelsActions } from '../slices/channelsInfoSlice.js';
 import { actions as messagesActions } from '../slices/messagesInfoSlice.js';
-import { getAuthToken } from '../helpers/getAuthData';
+import getAuthData from '../helpers/getAuthData';
 import ChannelsContainer from '../components/ChannelsContainer.jsx';
 import MessagesContainer from '../components/MessagesContainer.jsx';
 
@@ -15,9 +15,10 @@ const ChatPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const authData = getAuthData();
         const response = await axios.get('/api/v1/data', {
           headers: {
-            Authorization: `Bearer ${getAuthToken()}`,
+            Authorization: `Bearer ${authData.token}`,
           },
         });
         const { channels, messages, currentChannelId } = response.data;
@@ -28,7 +29,6 @@ const ChatPage = () => {
         console.log(error);
       }
     };
-
     fetchData();
   }, []);
 

@@ -3,6 +3,7 @@ import PrivateRoute from './components/PrivateRoute.jsx';
 import ChatPage from './pages/ChatPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
+import SignupPage from './pages/SignupPage.jsx';
 
 const routes = [
   {
@@ -20,6 +21,10 @@ const routes = [
       {
         path: 'login',
         element: <LoginPage />,
+      },
+      {
+        path: 'signup',
+        element: <SignupPage />,
       },
       {
         path: '*',

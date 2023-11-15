@@ -7,7 +7,7 @@ import Button from 'react-bootstrap/Button';
 import socket from '../socket.js';
 import { selectCurrentChannelId } from '../slices/channelsInfoSlice.js';
 import { actions as messagesActions } from '../slices/messagesInfoSlice.js';
-import { getUsername } from '../helpers/getAuthData';
+import getAuthData from '../helpers/getAuthData';
 
 const MessagesForm = () => {
   const dispatch = useDispatch();
@@ -35,10 +35,12 @@ const MessagesForm = () => {
     },
     onSubmit: async (values, { resetForm, setSubmitting }) => {
       setSubmitting(true);
+
       try {
+        const authData = getAuthData();
         const newMessage = {
           body: values.body,
-          username: getUsername(),
+          username: authData.username,
           channelId: currentChannelId,
         };
         await socket.emit('newMessage', newMessage);

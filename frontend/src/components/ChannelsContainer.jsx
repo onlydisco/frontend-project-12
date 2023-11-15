@@ -101,11 +101,7 @@ const ChannelsContainer = () => {
         {channels?.map((channel) => (
           <li className="nav-item w-100" key={channel.id}>
             {channel.removable ? (
-              <Dropdown
-                as={ButtonGroup}
-                className="d-flex"
-                onClick={() => handleActiveChannel(channel.id)}
-              >
+              <Dropdown as={ButtonGroup} className="d-flex">
                 <Button
                   className="w-100 rounded-0 text-start text-truncate"
                   variant={currentChannelId === channel.id && 'primary'}
@@ -119,6 +115,7 @@ const ChannelsContainer = () => {
                   variant={currentChannelId === channel.id && 'primary'}
                   id="dropdown-split-basic"
                   split
+                  show={false}
                 >
                   <span className="visually-hidden">Управление каналом</span>
                 </Dropdown.Toggle>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../contexts/AuthContext.js';
 
@@ -7,11 +7,11 @@ const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(!!user?.token);
 
-  useEffect(() => {
-    if (!loggedIn) {
-      navigate('/login');
-    }
-  }, [loggedIn]);
+  // useEffect(() => {
+  //   if (!loggedIn) {
+  //     navigate('/signup');
+  //   }
+  // }, [loggedIn]);
 
   const logIn = (token, username) => {
     if (token) {
@@ -24,6 +24,7 @@ const AuthProvider = ({ children }) => {
   const logOut = () => {
     localStorage.removeItem('user');
     setLoggedIn(false);
+    navigate('/login');
   };
 
   return (

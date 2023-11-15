@@ -1,3 +1,4 @@
+import React from 'react';
 import { useRoutes } from 'react-router-dom';
 import AuthProvider from './components/AuthProvider';
 import routes from './routes';

@@ -86,7 +86,7 @@ const LoginForm = () => {
                 isInvalid={authFailed}
               />
               <Form.Control.Feedback type="invalid">
-                Неверное имя пользователя или пароль
+                Неверные имя пользователя или пароль
               </Form.Control.Feedback>
             </FloatingLabel>
           </Form.Group>
