@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
@@ -19,8 +18,8 @@ const LoginSchema = Yup.object().shape({
 const LoginForm = () => {
   const [authFailed, setAuthFailed] = useState(false);
   const auth = useAuth();
-  const usernameInput = useRef(null);
 
+  const usernameInput = useRef(null);
   useEffect(() => {
     usernameInput.current.focus();
   }, []);
@@ -39,12 +38,11 @@ const LoginForm = () => {
       setAuthFailed(false);
       try {
         const response = await axios.post('/api/v1/login', values);
-        auth.logIn(response?.data?.token, values.username);
+        auth.logIn(response?.data?.token, response?.data?.username);
       } catch (error) {
         setSubmitting(false);
         if (error.isAxiosError && error.response.status === 401) {
           setAuthFailed(true);
-          return;
         }
         console.log(error);
       }
