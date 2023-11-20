@@ -6,30 +6,34 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Button from 'react-bootstrap/Button';
+import { useTranslation } from 'react-i18next';
 import useAuth from '../hooks/useAuth.js';
-
-const SignupSchema = Yup.object().shape({
-  username: Yup.string()
-    .required('Username required')
-    .min(3, 'Must be 3 characters or more')
-    .max(20, 'Must be 20 characters or less'),
-  password: Yup.string()
-    .required('Password required')
-    .min(6, 'Must be 6 characters or more'),
-  confirmPassword: Yup.string()
-    .required('Password confirm required')
-    .oneOf([Yup.ref('password'), null], 'Passwords must match'),
-});
 
 const SignupForm = () => {
   const [signupFailed, setSignupFailed] = useState(false);
-
+  const { t } = useTranslation();
   const auth = useAuth();
 
   const usernameInput = useRef(null);
   useEffect(() => {
     usernameInput.current.focus();
   }, []);
+
+  const SignupSchema = Yup.object().shape({
+    username: Yup.string()
+      .required(t('signupForm.username.validation.required'))
+      .min(3, t('signupForm.username.validation.min'))
+      .max(20, t('signupForm.username.validation.max')),
+    password: Yup.string()
+      .required(t('signupForm.password.validation.required'))
+      .min(6, t('signupForm.password.validation.min')),
+    confirmPassword: Yup.string()
+      .required(t('signupForm.confirmPassword.validation.required'))
+      .oneOf(
+        [Yup.ref('password'), null],
+        t('signupForm.confirmPassword.validation.confirmation'),
+      ),
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -64,15 +68,18 @@ const SignupForm = () => {
     <Card className="rounded shadow">
       <Card.Body className="p-5">
         <Form onSubmit={formik.handleSubmit}>
-          <h1 className="text-center mb-4">Регистрация</h1>
+          <h1 className="text-center mb-4">{t('signupForm.header')}</h1>
 
           <Form.Group className="mb-3">
-            <FloatingLabel controlId="username" label="Имя пользователя">
+            <FloatingLabel
+              controlId="username"
+              label={t('signupForm.username.placeholder')}
+            >
               <Form.Control
                 name="username"
                 type="text"
                 autoComplete="username"
-                placeholder="Ваш ник"
+                placeholder={t('signupForm.username.placeholder')}
                 required
                 onChange={formik.handleChange}
                 value={formik.values.username}
@@ -86,12 +93,15 @@ const SignupForm = () => {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <FloatingLabel controlId="password" label="Пароль">
+            <FloatingLabel
+              controlId="password"
+              label={t('signupForm.password.placeholder')}
+            >
               <Form.Control
                 name="password"
                 type="password"
                 autoComplete="new-password"
-                placeholder="Пароль"
+                placeholder={t('signupForm.password.placeholder')}
                 required
                 onChange={formik.handleChange}
                 value={formik.values.password}
@@ -106,13 +116,13 @@ const SignupForm = () => {
           <Form.Group className="mb-4">
             <FloatingLabel
               controlId="confirmPassword"
-              label="Подтвердите пароль"
+              label={t('signupForm.confirmPassword.placeholder')}
             >
               <Form.Control
                 name="confirmPassword"
                 type="password"
                 autoComplete="new-password"
-                placeholder="Подтвердите пароль"
+                placeholder={t('signupForm.confirmPassword.placeholder')}
                 required
                 onChange={formik.handleChange}
                 value={formik.values.confirmPassword}
@@ -120,7 +130,7 @@ const SignupForm = () => {
               />
               <Form.Control.Feedback type="invalid">
                 {signupFailed
-                  ? 'Такой пользователь уже существует'
+                  ? t('signupForm.signupFailed')
                   : formik.errors.confirmPassword}
               </Form.Control.Feedback>
             </FloatingLabel>
@@ -132,7 +142,7 @@ const SignupForm = () => {
             type="submit"
             disabled={formik.isSubmitting}
           >
-            Зарегистрироваться
+            {t('signupForm.submit')}
           </Button>
         </Form>
       </Card.Body>

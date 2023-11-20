@@ -1,17 +1,10 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import store from './slices';
-import App from './App.jsx';
 import './assets/styles/styles.scss';
+import init from './init.js';
 
-const root = ReactDOM.createRoot(document.getElementById('chat'));
+const app = async () => {
+  const root = ReactDOM.createRoot(document.getElementById('chat'));
+  root.render(await init());
+};
 
-root.render(
-  <BrowserRouter>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </BrowserRouter>,
-);
+app();

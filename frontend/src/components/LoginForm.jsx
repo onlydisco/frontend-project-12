@@ -7,22 +7,27 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Button from 'react-bootstrap/Button';
-
+import { useTranslation } from 'react-i18next';
 import useAuth from '../hooks/useAuth.js';
-
-const LoginSchema = Yup.object().shape({
-  username: Yup.string().required('Username required'),
-  password: Yup.string().required('Password required'),
-});
 
 const LoginForm = () => {
   const [authFailed, setAuthFailed] = useState(false);
   const auth = useAuth();
+  const { t } = useTranslation();
 
   const usernameInput = useRef(null);
   useEffect(() => {
     usernameInput.current.focus();
   }, []);
+
+  const LoginSchema = Yup.object().shape({
+    username: Yup.string().required(
+      t('loginForm.username.validation.required'),
+    ),
+    password: Yup.string().required(
+      t('loginForm.password.validation.required'),
+    ),
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -53,15 +58,18 @@ const LoginForm = () => {
     <Card className="rounded shadow">
       <Card.Body className="p-5">
         <Form onSubmit={formik.handleSubmit}>
-          <h1 className="text-center mb-4">Войти</h1>
+          <h1 className="text-center mb-4">{t('loginForm.header')}</h1>
 
           <Form.Group className="mb-3">
-            <FloatingLabel controlId="username" label="Ваш ник">
+            <FloatingLabel
+              controlId="username"
+              label={t('loginForm.username.placeholder')}
+            >
               <Form.Control
                 name="username"
                 type="text"
                 autoComplete="username"
-                placeholder="Ваш ник"
+                placeholder={t('loginForm.username.placeholder')}
                 required
                 ref={usernameInput}
                 onChange={formik.handleChange}
@@ -72,19 +80,22 @@ const LoginForm = () => {
           </Form.Group>
 
           <Form.Group className="mb-4">
-            <FloatingLabel controlId="password" label="Пароль">
+            <FloatingLabel
+              controlId="password"
+              label={t('loginForm.password.placeholder')}
+            >
               <Form.Control
                 name="password"
                 type="password"
                 autoComplete="current-password"
-                placeholder="Пароль"
+                placeholder={t('loginForm.password.placeholder')}
                 required
                 onChange={formik.handleChange}
                 value={formik.values.password}
                 isInvalid={authFailed}
               />
               <Form.Control.Feedback type="invalid">
-                Неверные имя пользователя или пароль
+                {t('loginForm.authFailed')}
               </Form.Control.Feedback>
             </FloatingLabel>
           </Form.Group>
@@ -95,14 +106,17 @@ const LoginForm = () => {
             type="submit"
             disabled={formik.isSubmitting}
           >
-            Войти
+            {t('loginForm.submit')}
           </Button>
         </Form>
       </Card.Body>
       <Card.Footer className="p-4">
         <div className="text-center">
-          <span>Нет аккаунта? </span>
-          <Link to="/signup">Регистрация</Link>
+          <span>
+            {t('loginForm.footer.question')}
+            {' '}
+          </span>
+          <Link to="/signup">{t('loginForm.footer.link')}</Link>
         </div>
       </Card.Footer>
     </Card>

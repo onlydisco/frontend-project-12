@@ -1,11 +1,13 @@
 import React from 'react';
 import Col from 'react-bootstrap/Col';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { selectCurrentChannel } from '../slices/channelsInfoSlice.js';
 import { selectCurrentChannelMessages } from '../slices/messagesInfoSlice.js';
 import MessagesForm from './MessagesForm.jsx';
 
 const MessagesContainer = () => {
+  const { t } = useTranslation();
   const currentChannel = useSelector(selectCurrentChannel);
   const currentChannelMessages = useSelector(selectCurrentChannelMessages);
 
@@ -20,9 +22,9 @@ const MessagesContainer = () => {
             </b>
           </p>
           <span className="text-muted">
-            {currentChannelMessages?.length}
-            {' '}
-            сообщений
+            {t('messages.counter.count', {
+              count: currentChannelMessages?.length,
+            })}
           </span>
         </div>
 

@@ -5,20 +5,13 @@ import Modal from 'react-bootstrap/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useTranslation } from 'react-i18next';
 import {
   actions as modalActions,
   selectModalForChannelId,
 } from '../../slices/modalSlice.js';
 import { channelsSelectors } from '../../slices/channelsInfoSlice.js';
 import socket from '../../socket.js';
-
-const AddChannelSchema = (channelsNames) => Yup.object().shape({
-  name: Yup.string()
-    .required('Required')
-    .min(3, 'Must be 3 characters or more')
-    .max(20, 'Must be 20 characters or less')
-    .notOneOf(channelsNames, 'Must be unique'),
-});
 
 const RenameChannelModal = () => {
   const dispatch = useDispatch();
@@ -28,6 +21,7 @@ const RenameChannelModal = () => {
   const channelToRename = Object.values(channels).find(
     (channel) => channel.id === modalForChannelId,
   );
+  const { t } = useTranslation();
 
   const channelRenameInput = useRef(null);
 
@@ -44,13 +38,24 @@ const RenameChannelModal = () => {
     }, 1);
   }, []);
 
+  const RenameChannelSchema = Yup.object().shape({
+    name: Yup.string()
+      .required(t('modals.renameChannelModal.validation.required'))
+      .min(3, t('modals.renameChannelModal.validation.min'))
+      .max(20, t('modals.renameChannelModal.validation.max'))
+      .notOneOf(
+        channelsNames,
+        t('modals.renameChannelModal.validation.notOneOf'),
+      ),
+  });
+
   const formik = useFormik({
     initialValues: {
       name: channelToRename.name,
     },
     validateOnBlur: false,
     validateOnChange: false,
-    validationSchema: AddChannelSchema(channelsNames),
+    validationSchema: RenameChannelSchema,
     onSubmit: async (values, { validateForm, setSubmitting }) => {
       setSubmitting(true);
       validateForm();
@@ -71,13 +76,13 @@ const RenameChannelModal = () => {
   return (
     <Modal onHide={handleCloseModal} show centered>
       <Modal.Header closeButton>
-        <Modal.Title>Переименовать канал</Modal.Title>
+        <Modal.Title>{t('modals.renameChannelModal.header')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
           <Form.Group>
             <Form.Label className="visually-hidden" htmlFor="name">
-              Имя канала
+              {t('modals.renameChannelModal.labelHidden')}
             </Form.Label>
             <Form.Control
               className="mb-2"
@@ -85,6 +90,7 @@ const RenameChannelModal = () => {
               name="name"
               type="text"
               autoComplete="new-channel"
+              required
               ref={channelRenameInput}
               onChange={formik.handleChange}
               value={formik.values.name}
@@ -102,7 +108,7 @@ const RenameChannelModal = () => {
               disabled={formik.isSubmitting}
               onClick={handleCloseModal}
             >
-              Отменить
+              {t('modals.renameChannelModal.buttons.cancel')}
             </Button>
             <Button
               className="btn btn-primary mt-2"
@@ -110,7 +116,7 @@ const RenameChannelModal = () => {
               type="submit"
               disabled={formik.isSubmitting}
             >
-              Отправить
+              {t('modals.renameChannelModal.buttons.submit')}
             </Button>
           </div>
         </Form>

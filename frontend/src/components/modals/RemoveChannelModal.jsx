@@ -2,12 +2,17 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { useDispatch, useSelector } from 'react-redux';
-import { actions as modalActions, selectModalForChannelId } from '../../slices/modalSlice.js';
+import { useTranslation } from 'react-i18next';
+import {
+  actions as modalActions,
+  selectModalForChannelId,
+} from '../../slices/modalSlice.js';
 import socket from '../../socket.js';
 
 const RemoveChannelModal = () => {
   const dispatch = useDispatch();
   const modalForChannelId = useSelector(selectModalForChannelId);
+  const { t } = useTranslation();
 
   const handleCloseModal = () => {
     dispatch(modalActions.showModal(false));
@@ -23,10 +28,10 @@ const RemoveChannelModal = () => {
   return (
     <Modal onHide={handleCloseModal} show centered>
       <Modal.Header closeButton>
-        <Modal.Title>Удалить канал</Modal.Title>
+        <Modal.Title>{t('modals.removeChannelModal.header')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p className="lead">Уверены?</p>
+        <p className="lead">{t('modals.removeChannelModal.question')}</p>
         <div className="d-flex justify-content-end">
           <Button
             className="btn btn-primary mt-2 me-2"
@@ -34,7 +39,7 @@ const RemoveChannelModal = () => {
             type="button"
             onClick={handleCloseModal}
           >
-            Отменить
+            {t('modals.removeChannelModal.buttons.cancel')}
           </Button>
           <Button
             className="btn btn-primary mt-2"
@@ -42,7 +47,7 @@ const RemoveChannelModal = () => {
             type="button"
             onClick={() => handleRemoveChannel(modalForChannelId)}
           >
-            Удалить
+            {t('modals.removeChannelModal.buttons.delete')}
           </Button>
         </div>
       </Modal.Body>
