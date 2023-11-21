@@ -3,6 +3,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import {
   actions as modalActions,
   selectModalForChannelId,
@@ -20,9 +21,18 @@ const RemoveChannelModal = () => {
     dispatch(modalActions.setModalForChannelId(null));
   };
 
-  const handleRemoveChannel = (channelId) => {
-    socket.emit('removeChannel', { id: channelId });
-    handleCloseModal();
+  const handleRemoveChannel = async (channelId) => {
+    try {
+      socket.emit('removeChannel', { id: channelId }, (response) => {
+        const { status } = response;
+        return status === 'ok'
+          ? toast.success(t('notifications.channelRemoved'))
+          : toast.error(t('notifications.connectionError'));
+      });
+      handleCloseModal();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -45,7 +55,7 @@ const RemoveChannelModal = () => {
             className="btn btn-primary mt-2"
             variant="danger"
             type="button"
-            onClick={() => handleRemoveChannel(modalForChannelId)}
+            onClick={async () => handleRemoveChannel(modalForChannelId)}
           >
             {t('modals.removeChannelModal.buttons.delete')}
           </Button>

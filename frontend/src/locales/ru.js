@@ -115,5 +115,12 @@ export default {
       description: 'Но вы можете перейти',
       link: 'на главную страницу',
     },
+    notifications: {
+      channelAdded: 'Канал создан',
+      channelRenamed: 'Канал переименован',
+      channelRemoved: 'Канал удалён',
+      connectionError: 'Ошибка соединения',
+      unknownError: 'Неизвестная ошибка',
+    },
   },
 };

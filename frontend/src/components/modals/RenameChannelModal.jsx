@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import {
   actions as modalActions,
   selectModalForChannelId,
@@ -64,7 +65,12 @@ const RenameChannelModal = () => {
           id: modalForChannelId,
           name: values.name,
         };
-        await socket.emit('renameChannel', newChannel);
+        await socket.emit('renameChannel', newChannel, (response) => {
+          const { status } = response;
+          return status === 'ok'
+            ? toast.success(t('notifications.channelRenamed'))
+            : toast.error(t('notifications.connectionError'));
+        });
         handleCloseModal();
       } catch (error) {
         setSubmitting(false);

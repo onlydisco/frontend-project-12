@@ -8,6 +8,7 @@ import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Button from 'react-bootstrap/Button';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import useAuth from '../hooks/useAuth.js';
 
 const LoginForm = () => {
@@ -45,11 +46,20 @@ const LoginForm = () => {
         const response = await axios.post('/api/v1/login', values);
         auth.logIn(response?.data?.token, response?.data?.username);
       } catch (error) {
+        console.error(error);
         setSubmitting(false);
-        if (error.isAxiosError && error.response.status === 401) {
-          setAuthFailed(true);
+
+        if (!error.isAxiosError) {
+          toast.error(t('notifications.unknownError'));
+          return;
         }
-        console.log(error);
+
+        if (error.response?.status === 401) {
+          setAuthFailed(true);
+          usernameInput.current.select();
+        } else {
+          toast.error(t('notifications.connectionError'));
+        }
       }
     },
   });
