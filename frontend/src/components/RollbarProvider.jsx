@@ -6,17 +6,9 @@ const rollbarConfig = {
   environment: 'production',
 };
 
-function TestError() {
-  const a = null;
-  return a.hello();
-}
-
 const RollbarProvider = ({ children }) => (
   <Provider config={rollbarConfig}>
-    <ErrorBoundary>
-      <TestError />
-      {children}
-    </ErrorBoundary>
+    <ErrorBoundary>{children}</ErrorBoundary>
   </Provider>
 );
 
