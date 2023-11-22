@@ -1,8 +1,8 @@
 import React from 'react';
-import { Provider, ErrorBoundary } from '@rollbar/react'; // Provider imports 'rollbar'
+import { Provider, ErrorBoundary } from '@rollbar/react';
 
 const rollbarConfig = {
-  accessToken: '4262bb6db71f427cbd7c077f08f196df',
+  accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
   environment: 'production',
 };
 

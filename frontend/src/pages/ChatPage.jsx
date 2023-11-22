@@ -21,7 +21,7 @@ const ChatPage = () => {
     const fetchData = async () => {
       try {
         const authData = getAuthData();
-        const response = await axios.get('/api/v1/data', {
+        const response = await axios.get(process.env.REACT_APP_DATA, {
           headers: {
             Authorization: `Bearer ${authData.token}`,
           },
