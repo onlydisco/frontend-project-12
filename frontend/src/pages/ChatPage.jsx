@@ -49,8 +49,8 @@ const ChatPage = () => {
   }, []);
 
   return (
-    <Container className="h-100 overflow-hidden rounded shadow">
-      <Row className="h-100 bg-white flex-md-row">
+    <Container className="h-100 py-0 overflow-hidden bg-white flex-md-row shadow rounded">
+      <Row className="h-100">
         <ChannelsContainer />
         <MessagesContainer />
       </Row>

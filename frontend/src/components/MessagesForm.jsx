@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { useFormik } from 'formik';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -10,23 +10,23 @@ import { toast } from 'react-toastify';
 import * as leoProfanity from 'leo-profanity';
 import socket from '../socket.js';
 import { selectCurrentChannelId } from '../slices/channelsInfoSlice.js';
-import { actions as messagesActions } from '../slices/messagesInfoSlice.js';
+// import { actions as messagesActions } from '../slices/messagesInfoSlice.js';
 import getAuthData from '../helpers/getAuthData';
 
 const MessagesForm = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const currentChannelId = useSelector(selectCurrentChannelId);
   const { t } = useTranslation();
 
-  useEffect(() => {
-    socket.on('newMessage', (messageWithId) => {
-      dispatch(messagesActions.addMessage(messageWithId));
-    });
+  // useEffect(() => {
+  //   socket.on('newMessage', (messageWithId) => {
+  //     dispatch(messagesActions.addMessage(messageWithId));
+  //   });
 
-    return () => {
-      socket.off('newMessage');
-    };
-  }, []);
+  //   return () => {
+  //     socket.off('newMessage');
+  //   };
+  // }, []);
 
   const messageInput = useRef(null);
 

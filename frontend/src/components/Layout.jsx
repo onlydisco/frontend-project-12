@@ -5,7 +5,8 @@ import Header from './Header';
 const Layout = () => (
   <div className="h-100 d-flex flex-column">
     <Header />
-    <main className="py-4 flex-grow-1">
+
+    <main className="h-100 overflow-hidden py-4">
       <Outlet />
     </main>
   </div>

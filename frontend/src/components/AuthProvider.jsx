@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../contexts/AuthContext.js';
-import socket from '../socket.js';
 
 const AuthProvider = ({ children }) => {
   const user = JSON.parse(localStorage.getItem('user'));
@@ -19,7 +18,6 @@ const AuthProvider = ({ children }) => {
   const logOut = () => {
     localStorage.removeItem('user');
     setLoggedIn(false);
-    socket.disconnect();
     navigate('/login');
   };
 

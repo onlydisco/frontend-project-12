@@ -7,7 +7,7 @@ import SignupForm from '../components/SignupForm.jsx';
 const SignupPage = () => (
   <Container fluid className="h-100">
     <Row className="h-100 justify-content-center align-content-center">
-      <Col xs={12} md={8} xxl={6}>
+      <Col xs={12} sm={8} md={8} lg={6} xl={5} xxl={4}>
         <SignupForm />
       </Col>
     </Row>

@@ -12,9 +12,9 @@ const Header = () => {
 
   return (
     <header>
-      <Navbar className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
+      <Navbar className="shadow-sm bg-white position-static">
         <Container>
-          <Link className="navbar-brand" to="/">
+          <Link className="navbar-brand focus-ring" to="/">
             {t('navbar.logo')}
           </Link>
           {auth.loggedIn && <LogoutButton />}
