@@ -7,6 +7,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import * as leoProfanity from 'leo-profanity';
 import { actions as modalActions } from '../../slices/modalSlice.js';
 import { channelsSelectors } from '../../slices/channelsInfoSlice.js';
 import socket from '../../socket.js';
@@ -50,7 +51,7 @@ const AddChannelModal = () => {
       validateForm();
       try {
         const newChannel = {
-          name: values.name,
+          name: leoProfanity.clean(values.name),
           removable: true,
         };
         await socket.emit('newChannel', newChannel, (response) => {

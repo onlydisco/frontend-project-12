@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import { ArrowRightSquare } from 'react-bootstrap-icons';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import * as leoProfanity from 'leo-profanity';
 import socket from '../socket.js';
 import { selectCurrentChannelId } from '../slices/channelsInfoSlice.js';
 import { actions as messagesActions } from '../slices/messagesInfoSlice.js';
@@ -44,7 +45,7 @@ const MessagesForm = () => {
         const authData = getAuthData();
 
         const newMessage = {
-          body: values.body,
+          body: leoProfanity.clean(values.body),
           username: authData.username,
           channelId: currentChannelId,
         };

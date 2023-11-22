@@ -7,6 +7,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import * as leoProfanity from 'leo-profanity';
 import {
   actions as modalActions,
   selectModalForChannelId,
@@ -63,7 +64,7 @@ const RenameChannelModal = () => {
       try {
         const newChannel = {
           id: modalForChannelId,
-          name: values.name,
+          name: leoProfanity.clean(values.name),
         };
         await socket.emit('renameChannel', newChannel, (response) => {
           const { status } = response;
