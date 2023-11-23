@@ -53,10 +53,7 @@ const SignupForm = () => {
           username: values.username,
           password: values.password,
         };
-        const response = await axios.post(
-          process.env.REACT_APP_SIGNUP_URL,
-          requestBody,
-        );
+        const response = await axios.post('/api/v1/signup', requestBody);
         auth.logIn(response?.data?.token, response?.data?.username);
       } catch (error) {
         console.error(error);
