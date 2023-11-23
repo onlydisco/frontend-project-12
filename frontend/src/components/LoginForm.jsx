@@ -43,10 +43,7 @@ const LoginForm = () => {
       validateForm();
       setAuthFailed(false);
       try {
-        const response = await axios.post(
-          process.env.REACT_APP_LOGIN_URL,
-          values,
-        );
+        const response = await axios.post('/api/v1/login', values);
         auth.logIn(response?.data?.token, response?.data?.username);
       } catch (error) {
         console.error(error);
