@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../contexts/AuthContext.js';
 
 const AuthProvider = ({ children }) => {
-  const user = JSON.parse(localStorage.getItem('user'));
+  const user = useMemo(() => JSON.parse(localStorage.getItem('user'), [localStorage]));
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(!!user?.token);
 

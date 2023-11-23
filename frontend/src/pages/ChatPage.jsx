@@ -46,7 +46,7 @@ const ChatPage = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [dispatch, navigate, t]);
 
   return (
     <Container className="h-100 py-0 overflow-hidden bg-white flex-md-row shadow rounded">

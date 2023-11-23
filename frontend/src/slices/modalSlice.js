@@ -11,12 +11,15 @@ const modalSlice = createSlice({
   initialState,
   reducers: {
     showModal: (state, { payload }) => {
+      /* eslint-disable-line */
       state.isOpened = payload;
     },
     setModalType: (state, { payload }) => {
+      /* eslint-disable-line */
       state.type = payload;
     },
     setModalForChannelId: (state, { payload }) => {
+      /* eslint-disable-line */
       state.modalForChannelId = payload;
     },
   },
