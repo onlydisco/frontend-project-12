@@ -3,28 +3,30 @@ import { useNavigate } from 'react-router-dom';
 import AuthContext from '../contexts/AuthContext.js';
 
 const AuthProvider = ({ children }) => {
-  const user = useMemo(() => JSON.parse(localStorage.getItem('user'), [localStorage]));
+  const user = JSON.parse(localStorage.getItem('user'));
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(!!user?.token);
 
-  const logIn = (token, username) => {
-    if (token) {
-      localStorage.setItem('user', JSON.stringify({ token, username }));
-      setLoggedIn(true);
-      navigate('/');
-    }
-  };
+  const authProps = useMemo(() => {
+    const logIn = (token, username) => {
+      if (token) {
+        localStorage.setItem('user', JSON.stringify({ token, username }));
+        setLoggedIn(true);
+        navigate('/');
+      }
+    };
 
-  const logOut = () => {
-    localStorage.removeItem('user');
-    setLoggedIn(false);
-    navigate('/login');
-  };
+    const logOut = () => {
+      localStorage.removeItem('user');
+      setLoggedIn(false);
+      navigate('/login');
+    };
+
+    return { loggedIn, logIn, logOut };
+  }, [loggedIn, navigate]);
 
   return (
-    <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={authProps}>{children}</AuthContext.Provider>
   );
 };
 

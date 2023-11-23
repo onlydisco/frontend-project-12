@@ -22,7 +22,7 @@ const channelsInfoSlice = createSlice({
       channelsAdapter.addMany(state.channels, payload);
     },
     setCurrentChannelId: (state, { payload }) => {
-      /* eslint-disable-line */
+      /* eslint-disable-next-line */
       state.currentChannelId = payload;
     },
     renameChannel: (state, { payload }) => {
