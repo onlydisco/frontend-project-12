@@ -11,6 +11,7 @@ import { actions as messagesActions } from '../slices/messagesInfoSlice.js';
 import getAuthData from '../helpers/getAuthData';
 import ChannelsContainer from '../components/ChannelsContainer.jsx';
 import MessagesContainer from '../components/MessagesContainer.jsx';
+import routes from '../routes.js';
 
 const ChatPage = () => {
   const dispatch = useDispatch();
@@ -21,7 +22,7 @@ const ChatPage = () => {
     const fetchData = async () => {
       try {
         const authData = getAuthData();
-        const response = await axios.get('/api/v1/data', {
+        const response = await axios.get(routes.dataPath(), {
           headers: {
             Authorization: `Bearer ${authData.token}`,
           },

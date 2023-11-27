@@ -9,6 +9,7 @@ import Button from 'react-bootstrap/Button';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import useAuth from '../hooks/useAuth.js';
+import routes from '../routes.js';
 
 const SignupForm = () => {
   const [signupFailed, setSignupFailed] = useState(false);
@@ -53,7 +54,7 @@ const SignupForm = () => {
           username: values.username,
           password: values.password,
         };
-        const response = await axios.post('/api/v1/signup', requestBody);
+        const response = await axios.post(routes.signupPath(), requestBody);
         auth.logIn(response?.data?.token, response?.data?.username);
       } catch (error) {
         console.error(error);

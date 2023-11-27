@@ -10,6 +10,7 @@ import Button from 'react-bootstrap/Button';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import useAuth from '../hooks/useAuth.js';
+import routes from '../routes.js';
 
 const LoginForm = () => {
   const [authFailed, setAuthFailed] = useState(false);
@@ -43,7 +44,7 @@ const LoginForm = () => {
       validateForm();
       setAuthFailed(false);
       try {
-        const response = await axios.post('/api/v1/login', values);
+        const response = await axios.post(routes.loginPath(), values);
         auth.logIn(response?.data?.token, response?.data?.username);
       } catch (error) {
         console.error(error);

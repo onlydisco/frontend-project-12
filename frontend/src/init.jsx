@@ -24,7 +24,9 @@ const init = async (socket) => {
   leoProfanity.add(russianDictionary);
 
   const withAcknowledgement = (socketFunc) => (...args) => new Promise((resolve, reject) => {
-    let state = 'pending';
+    /* eslint-disable-next-line */
+        let state = "pending";
+
     const timer = setTimeout(() => {
       state = 'rejected';
       reject();
