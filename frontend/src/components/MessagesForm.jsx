@@ -6,27 +6,15 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { ArrowRightSquare } from 'react-bootstrap-icons';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 import * as leoProfanity from 'leo-profanity';
-import socket from '../socket.js';
 import { selectCurrentChannelId } from '../slices/channelsInfoSlice.js';
-// import { actions as messagesActions } from '../slices/messagesInfoSlice.js';
 import getAuthData from '../helpers/getAuthData';
+import useSocketApi from '../hooks/useSocketApi.js';
 
 const MessagesForm = () => {
-  // const dispatch = useDispatch();
   const currentChannelId = useSelector(selectCurrentChannelId);
   const { t } = useTranslation();
-
-  // useEffect(() => {
-  //   socket.on('newMessage', (messageWithId) => {
-  //     dispatch(messagesActions.addMessage(messageWithId));
-  //   });
-
-  //   return () => {
-  //     socket.off('newMessage');
-  //   };
-  // }, []);
+  const socketApi = useSocketApi();
 
   const messageInput = useRef(null);
 
@@ -49,12 +37,8 @@ const MessagesForm = () => {
           username: authData.username,
           channelId: currentChannelId,
         };
-        await socket.emit('newMessage', newMessage, (response) => {
-          const { status } = response;
-          return status === 'ok'
-            ? null
-            : toast.error(t('notifications.connectionError'));
-        });
+        await socketApi.sendMessage(newMessage);
+
         messageInput.current.focus();
         resetForm();
       } catch (error) {

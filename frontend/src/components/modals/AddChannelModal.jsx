@@ -6,17 +6,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 import * as leoProfanity from 'leo-profanity';
+import { toast } from 'react-toastify';
 import { actions as modalActions } from '../../slices/modalSlice.js';
 import { channelsSelectors } from '../../slices/channelsInfoSlice.js';
-import socket from '../../socket.js';
+import useSocketApi from '../../hooks/useSocketApi.js';
 
 const AddChannelModal = () => {
   const dispatch = useDispatch();
   const channels = useSelector(channelsSelectors.selectEntities);
   const channelsNames = Object.values(channels).map((channel) => channel.name);
   const { t } = useTranslation();
+  const socketApi = useSocketApi();
 
   const channelNameInput = useRef(null);
 
@@ -54,12 +55,8 @@ const AddChannelModal = () => {
           name: leoProfanity.clean(values.name),
           removable: true,
         };
-        await socket.emit('newChannel', newChannel, (response) => {
-          const { status } = response;
-          return status === 'ok'
-            ? toast.success(t('notifications.channelAdded'))
-            : toast.error(t('notifications.connectionError'));
-        });
+        await socketApi.addChannel(newChannel);
+        toast.success(t('notifications.channelAdded'));
         handleCloseModal();
       } catch (error) {
         setSubmitting(false);

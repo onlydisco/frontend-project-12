@@ -6,14 +6,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 import * as leoProfanity from 'leo-profanity';
+import { toast } from 'react-toastify';
 import {
   actions as modalActions,
   selectModalForChannelId,
 } from '../../slices/modalSlice.js';
 import { channelsSelectors } from '../../slices/channelsInfoSlice.js';
-import socket from '../../socket.js';
+import useSocketApi from '../../hooks/useSocketApi.js';
 
 const RenameChannelModal = () => {
   const dispatch = useDispatch();
@@ -24,6 +24,7 @@ const RenameChannelModal = () => {
     (channel) => channel.id === modalForChannelId,
   );
   const { t } = useTranslation();
+  const socketApi = useSocketApi();
 
   const channelRenameInput = useRef(null);
 
@@ -66,12 +67,8 @@ const RenameChannelModal = () => {
           id: modalForChannelId,
           name: leoProfanity.clean(values.name),
         };
-        await socket.emit('renameChannel', newChannel, (response) => {
-          const { status } = response;
-          return status === 'ok'
-            ? toast.success(t('notifications.channelRenamed'))
-            : toast.error(t('notifications.connectionError'));
-        });
+        await socketApi.renameChannel(newChannel);
+        toast.success(t('notifications.channelRenamed'));
         handleCloseModal();
       } catch (error) {
         setSubmitting(false);

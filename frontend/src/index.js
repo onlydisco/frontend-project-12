@@ -1,10 +1,13 @@
 import ReactDOM from 'react-dom/client';
 import './assets/styles/styles.scss';
-import init from './init.js';
+import io from 'socket.io-client';
+import init from './init.jsx';
 
 const app = async () => {
   const root = ReactDOM.createRoot(document.getElementById('chat'));
-  root.render(await init());
+  const socket = io();
+
+  root.render(await init(socket));
 };
 
 app();
