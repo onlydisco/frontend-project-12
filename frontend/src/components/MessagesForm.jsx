@@ -9,12 +9,12 @@ import { useTranslation } from 'react-i18next';
 import * as leoProfanity from 'leo-profanity';
 import { selectCurrentChannelId } from '../slices/channelsInfoSlice.js';
 import getAuthData from '../helpers/getAuthData';
-import useSocketApi from '../hooks/useSocketApi.js';
+import useApi from '../hooks/useApi.js';
 
 const MessagesForm = () => {
   const currentChannelId = useSelector(selectCurrentChannelId);
   const { t } = useTranslation();
-  const socketApi = useSocketApi();
+  const api = useApi();
 
   const messageInput = useRef(null);
 
@@ -37,8 +37,7 @@ const MessagesForm = () => {
           username: authData.username,
           channelId: currentChannelId,
         };
-        await socketApi.sendMessage(newMessage);
-
+        await api.sendMessage(newMessage);
         messageInput.current.focus();
         resetForm();
       } catch (error) {

@@ -8,13 +8,13 @@ import {
   actions as modalActions,
   selectModalForChannelId,
 } from '../../slices/modalSlice.js';
-import useSocketApi from '../../hooks/useSocketApi.js';
+import useApi from '../../hooks/useApi.js';
 
 const RemoveChannelModal = () => {
   const dispatch = useDispatch();
   const modalForChannelId = useSelector(selectModalForChannelId);
   const { t } = useTranslation();
-  const socketApi = useSocketApi();
+  const api = useApi();
 
   const handleCloseModal = () => {
     dispatch(modalActions.showModal(false));
@@ -24,7 +24,7 @@ const RemoveChannelModal = () => {
 
   const handleRemoveChannel = async (channelId) => {
     try {
-      await socketApi.removeChannel({ id: channelId });
+      await api.removeChannel({ id: channelId });
       toast.success(t('notifications.channelRemoved'));
       handleCloseModal();
     } catch (error) {

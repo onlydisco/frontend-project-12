@@ -13,7 +13,7 @@ import {
   selectModalForChannelId,
 } from '../../slices/modalSlice.js';
 import { channelsSelectors } from '../../slices/channelsInfoSlice.js';
-import useSocketApi from '../../hooks/useSocketApi.js';
+import useApi from '../../hooks/useApi.js';
 
 const RenameChannelModal = () => {
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ const RenameChannelModal = () => {
     (channel) => channel.id === modalForChannelId,
   );
   const { t } = useTranslation();
-  const socketApi = useSocketApi();
+  const api = useApi();
 
   const channelRenameInput = useRef(null);
 
@@ -67,7 +67,7 @@ const RenameChannelModal = () => {
           id: modalForChannelId,
           name: leoProfanity.clean(values.name),
         };
-        await socketApi.renameChannel(newChannel);
+        await api.renameChannel(newChannel);
         toast.success(t('notifications.channelRenamed'));
         handleCloseModal();
       } catch (error) {

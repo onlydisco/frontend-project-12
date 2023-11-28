@@ -10,14 +10,14 @@ import * as leoProfanity from 'leo-profanity';
 import { toast } from 'react-toastify';
 import { actions as modalActions } from '../../slices/modalSlice.js';
 import { channelsSelectors } from '../../slices/channelsInfoSlice.js';
-import useSocketApi from '../../hooks/useSocketApi.js';
+import useApi from '../../hooks/useApi.js';
 
 const AddChannelModal = () => {
   const dispatch = useDispatch();
   const channels = useSelector(channelsSelectors.selectEntities);
   const channelsNames = Object.values(channels).map((channel) => channel.name);
   const { t } = useTranslation();
-  const socketApi = useSocketApi();
+  const api = useApi();
 
   const channelNameInput = useRef(null);
 
@@ -55,7 +55,7 @@ const AddChannelModal = () => {
           name: leoProfanity.clean(values.name),
           removable: true,
         };
-        await socketApi.addChannel(newChannel);
+        await api.addChannel(newChannel);
         toast.success(t('notifications.channelAdded'));
         handleCloseModal();
       } catch (error) {

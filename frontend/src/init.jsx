@@ -4,8 +4,7 @@ import { Provider } from 'react-redux';
 import * as leoProfanity from 'leo-profanity';
 import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
-import { toast } from 'react-toastify';
-import SocketApiContext from './contexts/SocketApiContext.js';
+import ApiContext from './contexts/ApiContext.js';
 import store from './slices/index.js';
 import App from './App.jsx';
 import resources from './locales/index.js';
@@ -30,7 +29,6 @@ const init = async (socket) => {
     const timer = setTimeout(() => {
       state = 'rejected';
       reject();
-      toast.error(i18n.t('notifications.connectionError'));
     }, 3000);
 
     socketFunc(...args, (response) => {
@@ -47,7 +45,7 @@ const init = async (socket) => {
     });
   });
 
-  const socketApi = {
+  const api = {
     sendMessage: withAcknowledgement((...args) => socket.emit('newMessage', ...args)),
     addChannel: withAcknowledgement((...args) => socket.emit('newChannel', ...args)),
     renameChannel: withAcknowledgement((...args) => socket.emit('renameChannel', ...args)),
@@ -76,9 +74,9 @@ const init = async (socket) => {
       <Provider store={store}>
         <BrowserRouter>
           <I18nextProvider i18n={i18n}>
-            <SocketApiContext.Provider value={socketApi}>
+            <ApiContext.Provider value={api}>
               <App />
-            </SocketApiContext.Provider>
+            </ApiContext.Provider>
           </I18nextProvider>
         </BrowserRouter>
       </Provider>
