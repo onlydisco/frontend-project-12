@@ -8,13 +8,14 @@ import { ArrowRightSquare } from 'react-bootstrap-icons';
 import { useTranslation } from 'react-i18next';
 import * as leoProfanity from 'leo-profanity';
 import { selectCurrentChannelId } from '../slices/channelsInfoSlice.js';
-import getAuthData from '../helpers/getAuthData';
 import useApi from '../hooks/useApi.js';
+import useAuth from '../hooks/useAuth.js';
 
 const MessagesForm = () => {
   const currentChannelId = useSelector(selectCurrentChannelId);
   const { t } = useTranslation();
   const api = useApi();
+  const auth = useAuth();
 
   const messageInput = useRef(null);
 
@@ -30,11 +31,9 @@ const MessagesForm = () => {
       setSubmitting(true);
 
       try {
-        const authData = getAuthData();
-
         const newMessage = {
           body: leoProfanity.clean(values.body),
-          username: authData.username,
+          username: auth.loggedIn.username,
           channelId: currentChannelId,
         };
         await api.sendMessage(newMessage);

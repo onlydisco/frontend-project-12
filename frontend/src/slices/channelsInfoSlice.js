@@ -16,7 +16,6 @@ const channelsInfoSlice = createSlice({
   initialState,
   reducers: {
     addChannel: (state, { payload }) => {
-      console.log(payload);
       channelsAdapter.addOne(state.channels, payload);
       /* eslint-disable-next-line */
       state.currentChannelId = payload.id;
