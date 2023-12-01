@@ -16,7 +16,10 @@ const channelsInfoSlice = createSlice({
   initialState,
   reducers: {
     addChannel: (state, { payload }) => {
+      console.log(payload);
       channelsAdapter.addOne(state.channels, payload);
+      /* eslint-disable-next-line */
+      state.currentChannelId = payload.id;
     },
     addChannels: (state, { payload }) => {
       channelsAdapter.addMany(state.channels, payload);
@@ -30,6 +33,8 @@ const channelsInfoSlice = createSlice({
     },
     removeChannel: (state, { payload }) => {
       channelsAdapter.removeOne(state.channels, payload);
+      /* eslint-disable-next-line */
+      state.currentChannelId = 1;
     },
   },
 });

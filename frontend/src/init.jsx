@@ -56,7 +56,6 @@ const init = async (socket) => {
     store.dispatch(messagesActions.addMessage(messageWithId));
   });
   socket.on('newChannel', (channelWithId) => {
-    store.dispatch(channelsActions.setCurrentChannelId(channelWithId.id));
     store.dispatch(channelsActions.addChannel(channelWithId));
   });
   socket.on('renameChannel', (channel) => {
@@ -66,7 +65,6 @@ const init = async (socket) => {
   });
   socket.on('removeChannel', (data) => {
     store.dispatch(channelsActions.removeChannel(data.id));
-    store.dispatch(channelsActions.setCurrentChannelId(1));
   });
 
   return (
