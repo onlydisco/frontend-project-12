@@ -5,7 +5,6 @@ import Row from 'react-bootstrap/Row';
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import { actions as channelsActions } from '../slices/channelsInfoSlice.js';
 import { actions as messagesActions } from '../slices/messagesInfoSlice.js';
 import ChannelsContainer from '../components/ChannelsContainer.jsx';
@@ -16,7 +15,6 @@ import useAuth from '../hooks/useAuth.js';
 const ChatPage = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const auth = useAuth();
 
   useEffect(() => {
@@ -38,14 +36,14 @@ const ChatPage = () => {
         }
 
         if (error.response?.status === 401) {
-          navigate('/login');
+          auth.logOut();
         } else {
           toast.error(t('notifications.connectionError'));
         }
       }
     };
     fetchData();
-  }, [dispatch, navigate, t, auth]);
+  }, [dispatch, t, auth]);
 
   return (
     <Container className="h-100 py-0 overflow-hidden bg-white flex-md-row shadow rounded">
