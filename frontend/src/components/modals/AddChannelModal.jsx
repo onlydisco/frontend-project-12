@@ -47,9 +47,7 @@ const AddChannelModal = () => {
     validateOnBlur: false,
     validateOnChange: false,
     validationSchema: AddChannelSchema,
-    onSubmit: async (values, { validateForm, setSubmitting }) => {
-      setSubmitting(true);
-      validateForm();
+    onSubmit: async (values) => {
       try {
         const newChannel = {
           name: leoProfanity.clean(values.name),
@@ -59,8 +57,7 @@ const AddChannelModal = () => {
         toast.success(t('notifications.channelAdded'));
         handleCloseModal();
       } catch (error) {
-        setSubmitting(false);
-        console.log(error);
+        console.error(error);
       }
     },
   });

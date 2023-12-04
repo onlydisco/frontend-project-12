@@ -46,19 +46,16 @@ const SignupForm = () => {
     validateOnBlur: false,
     validateOnChange: false,
     validationSchema: SignupSchema,
-    onSubmit: async (values, { validateForm, setSubmitting }) => {
-      setSubmitting(true);
-      validateForm();
+    onSubmit: async (values) => {
       try {
         const requestBody = {
           username: values.username,
           password: values.password,
         };
         const response = await axios.post(routes.signupPath(), requestBody);
-        auth.logIn(response?.data?.token, response?.data?.username);
+        auth.logIn(response?.data);
       } catch (error) {
         console.error(error);
-        setSubmitting(false);
 
         if (!error.isAxiosError) {
           toast.error(t('notifications.unknownError'));

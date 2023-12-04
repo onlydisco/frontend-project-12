@@ -59,9 +59,7 @@ const RenameChannelModal = () => {
     validateOnBlur: false,
     validateOnChange: false,
     validationSchema: RenameChannelSchema,
-    onSubmit: async (values, { validateForm, setSubmitting }) => {
-      setSubmitting(true);
-      validateForm();
+    onSubmit: async (values) => {
       try {
         const newChannel = {
           id: modalForChannelId,
@@ -71,8 +69,7 @@ const RenameChannelModal = () => {
         toast.success(t('notifications.channelRenamed'));
         handleCloseModal();
       } catch (error) {
-        setSubmitting(false);
-        console.log(error);
+        console.error(error);
       }
     },
   });

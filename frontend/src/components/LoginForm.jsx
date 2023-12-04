@@ -39,16 +39,13 @@ const LoginForm = () => {
     validateOnBlur: false,
     validateOnChange: false,
     validationSchema: LoginSchema,
-    onSubmit: async (values, { validateForm, setSubmitting }) => {
-      setSubmitting(true);
-      validateForm();
+    onSubmit: async (values) => {
       setAuthFailed(false);
       try {
         const response = await axios.post(routes.loginPath(), values);
         auth.logIn(response?.data);
       } catch (error) {
         console.error(error);
-        setSubmitting(false);
 
         if (!error.isAxiosError) {
           toast.error(t('notifications.unknownError'));
