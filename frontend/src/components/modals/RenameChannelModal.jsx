@@ -29,9 +29,7 @@ const RenameChannelModal = () => {
   const channelRenameInput = useRef(null);
 
   const handleCloseModal = () => {
-    dispatch(modalActions.showModal(false));
-    dispatch(modalActions.setModalType(null));
-    dispatch(modalActions.setModalForChannelId(null));
+    dispatch(modalActions.closeModal());
   };
 
   useEffect(() => {

@@ -28,8 +28,7 @@ const AddChannelModal = () => {
   }, []);
 
   const handleCloseModal = () => {
-    dispatch(modalActions.showModal(false));
-    dispatch(modalActions.setModalType(null));
+    dispatch(modalActions.closeModal());
   };
 
   const AddChannelSchema = Yup.object().shape({

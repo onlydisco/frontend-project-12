@@ -5,7 +5,7 @@ import { createSlice, createSelector } from '@reduxjs/toolkit';
 const initialState = {
   isOpened: false,
   type: null,
-  modalForChannelId: null,
+  extra: null,
 };
 
 const modalSlice = createSlice({
@@ -13,13 +13,15 @@ const modalSlice = createSlice({
   initialState,
   reducers: {
     showModal: (state, { payload }) => {
-      state.isOpened = payload;
+      const { type, extra } = payload;
+      state.isOpened = true;
+      state.type = type;
+      state.extra = extra ?? null;
     },
-    setModalType: (state, { payload }) => {
-      state.type = payload;
-    },
-    setModalForChannelId: (state, { payload }) => {
-      state.modalForChannelId = payload;
+    closeModal: (state) => {
+      state.isOpened = false;
+      state.type = null;
+      state.extra = null;
     },
   },
 });
@@ -29,8 +31,8 @@ export const selectOpenModal = createSelector(
   (isOpened) => isOpened,
 );
 export const selectModalForChannelId = createSelector(
-  (state) => state.modal.modalForChannelId,
-  (modalForChannelId) => modalForChannelId,
+  (state) => state.modal.extra.channelId,
+  (channelId) => channelId,
 );
 export const selectModalType = createSelector(
   (state) => state.modal.type,

@@ -38,20 +38,19 @@ const ChannelsContainer = () => {
   };
 
   const handleAddModal = () => {
-    dispatch(modalActions.showModal(true));
-    dispatch(modalActions.setModalType('addChannel'));
+    dispatch(modalActions.showModal({ type: 'addChannel' }));
   };
 
   const handleRenameModal = (channelId) => {
-    dispatch(modalActions.showModal(true));
-    dispatch(modalActions.setModalType('renameChannel'));
-    dispatch(modalActions.setModalForChannelId(channelId));
+    dispatch(
+      modalActions.showModal({ type: 'renameChannel', extra: { channelId } }),
+    );
   };
 
   const handleRemoveModal = (channelId) => {
-    dispatch(modalActions.showModal(true));
-    dispatch(modalActions.setModalType('removeChannel'));
-    dispatch(modalActions.setModalForChannelId(channelId));
+    dispatch(
+      modalActions.showModal({ type: 'removeChannel', extra: { channelId } }),
+    );
   };
 
   return (

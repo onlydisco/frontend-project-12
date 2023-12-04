@@ -17,9 +17,7 @@ const RemoveChannelModal = () => {
   const api = useApi();
 
   const handleCloseModal = () => {
-    dispatch(modalActions.showModal(false));
-    dispatch(modalActions.setModalType(null));
-    dispatch(modalActions.setModalForChannelId(null));
+    dispatch(modalActions.closeModal());
   };
 
   const handleRemoveChannel = async (channelId) => {
