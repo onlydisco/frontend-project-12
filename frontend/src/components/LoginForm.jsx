@@ -45,7 +45,7 @@ const LoginForm = () => {
       setAuthFailed(false);
       try {
         const response = await axios.post(routes.loginPath(), values);
-        auth.logIn(response?.data?.token, response?.data?.username);
+        auth.logIn(response?.data);
       } catch (error) {
         console.error(error);
         setSubmitting(false);

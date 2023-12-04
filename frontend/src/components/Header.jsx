@@ -17,7 +17,7 @@ const Header = () => {
           <Link className="navbar-brand focus-ring" to="/">
             {t('navbar.logo')}
           </Link>
-          {auth.loggedIn && <LogoutButton />}
+          {auth.user && <LogoutButton />}
         </Container>
       </Navbar>
     </header>

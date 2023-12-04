@@ -3,24 +3,25 @@ import { useNavigate } from 'react-router-dom';
 import AuthContext from '../contexts/AuthContext.js';
 
 const AuthProvider = ({ children }) => {
-  const user = JSON.parse(localStorage.getItem('user'));
+  const currentUser = JSON.parse(localStorage.getItem('user'));
   const navigate = useNavigate();
-  const [loggedIn, setLoggedIn] = useState(
-    user ? { username: user.username } : null,
+  const [user, setUser] = useState(
+    currentUser ? { username: currentUser.username } : null,
   );
 
   const authProps = useMemo(() => {
-    const logIn = (token, username) => {
+    const logIn = (userData) => {
+      const { username, token } = userData;
       if (token) {
         localStorage.setItem('user', JSON.stringify({ token, username }));
-        setLoggedIn({ username });
+        setUser({ username });
         navigate('/');
       }
     };
 
     const logOut = () => {
       localStorage.removeItem('user');
-      setLoggedIn(null);
+      setUser(null);
       navigate('/login');
     };
 
@@ -32,9 +33,12 @@ const AuthProvider = ({ children }) => {
     };
 
     return {
-      loggedIn, logIn, logOut, getAuthHeader,
+      user,
+      logIn,
+      logOut,
+      getAuthHeader,
     };
-  }, [loggedIn, navigate]);
+  }, [user, navigate]);
 
   return (
     <AuthContext.Provider value={authProps}>{children}</AuthContext.Provider>

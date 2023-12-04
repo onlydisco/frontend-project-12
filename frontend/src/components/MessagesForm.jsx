@@ -33,7 +33,7 @@ const MessagesForm = () => {
       try {
         const newMessage = {
           body: leoProfanity.clean(values.body),
-          username: auth.loggedIn.username,
+          username: auth.user.username,
           channelId: currentChannelId,
         };
         await api.sendMessage(newMessage);
