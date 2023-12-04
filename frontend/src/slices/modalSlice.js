@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+
 import { createSlice, createSelector } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -11,15 +13,12 @@ const modalSlice = createSlice({
   initialState,
   reducers: {
     showModal: (state, { payload }) => {
-      /* eslint-disable-next-line */
       state.isOpened = payload;
     },
     setModalType: (state, { payload }) => {
-      /* eslint-disable-next-line */
       state.type = payload;
     },
     setModalForChannelId: (state, { payload }) => {
-      /* eslint-disable-next-line */
       state.modalForChannelId = payload;
     },
   },

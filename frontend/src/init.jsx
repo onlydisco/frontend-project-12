@@ -57,6 +57,7 @@ const init = async (socket) => {
   });
   socket.on('newChannel', (channelWithId) => {
     store.dispatch(channelsActions.addChannel(channelWithId));
+    store.dispatch(channelsActions.setCurrentChannelId(channelWithId.id));
   });
   socket.on('renameChannel', (channel) => {
     store.dispatch(

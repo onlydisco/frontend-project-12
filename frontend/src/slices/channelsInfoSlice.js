@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import {
   createSlice,
   createEntityAdapter,
@@ -6,9 +7,11 @@ import {
 
 const channelsAdapter = createEntityAdapter();
 
+const defaultChannelId = 1;
+
 const initialState = {
   channels: channelsAdapter.getInitialState(),
-  currentChannelId: null,
+  currentChannelId: defaultChannelId,
 };
 
 const channelsInfoSlice = createSlice({
@@ -17,14 +20,11 @@ const channelsInfoSlice = createSlice({
   reducers: {
     addChannel: (state, { payload }) => {
       channelsAdapter.addOne(state.channels, payload);
-      /* eslint-disable-next-line */
-      state.currentChannelId = payload.id;
     },
     addChannels: (state, { payload }) => {
       channelsAdapter.addMany(state.channels, payload);
     },
     setCurrentChannelId: (state, { payload }) => {
-      /* eslint-disable-next-line */
       state.currentChannelId = payload;
     },
     renameChannel: (state, { payload }) => {
@@ -32,8 +32,7 @@ const channelsInfoSlice = createSlice({
     },
     removeChannel: (state, { payload }) => {
       channelsAdapter.removeOne(state.channels, payload);
-      /* eslint-disable-next-line */
-      state.currentChannelId = 1;
+      state.currentChannelId = defaultChannelId;
     },
   },
 });
