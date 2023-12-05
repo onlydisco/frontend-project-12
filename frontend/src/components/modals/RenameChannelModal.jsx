@@ -68,6 +68,7 @@ const RenameChannelModal = () => {
         handleCloseModal();
       } catch (error) {
         console.error(error);
+        toast.error(t('notifications.connectionError'));
       }
     },
   });

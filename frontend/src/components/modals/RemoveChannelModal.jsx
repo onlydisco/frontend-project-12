@@ -27,6 +27,7 @@ const RemoveChannelModal = () => {
       handleCloseModal();
     } catch (error) {
       console.log(error);
+      toast.error(t('notifications.connectionError'));
     }
   };
 

@@ -57,6 +57,7 @@ const AddChannelModal = () => {
         handleCloseModal();
       } catch (error) {
         console.error(error);
+        toast.error(t('notifications.connectionError'));
       }
     },
   });
