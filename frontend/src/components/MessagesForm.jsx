@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import { ArrowRightSquare } from 'react-bootstrap-icons';
 import { useTranslation } from 'react-i18next';
 import * as leoProfanity from 'leo-profanity';
+import { toast } from 'react-toastify';
 import { selectCurrentChannelId } from '../slices/channelsInfoSlice.js';
 import useApi from '../hooks/useApi.js';
 import useAuth from '../hooks/useAuth.js';
@@ -27,9 +28,7 @@ const MessagesForm = () => {
     initialValues: {
       body: '',
     },
-    onSubmit: async (values, { resetForm, setSubmitting }) => {
-      setSubmitting(true);
-
+    onSubmit: async (values, { resetForm }) => {
       try {
         const newMessage = {
           body: leoProfanity.clean(values.body),
@@ -40,8 +39,9 @@ const MessagesForm = () => {
         messageInput.current.focus();
         resetForm();
       } catch (error) {
-        setSubmitting(false);
-        console.log(error);
+        console.error(error);
+        toast.error(t('notifications.connectionError'));
+        messageInput.current.focus();
       }
     },
   });
