@@ -23,17 +23,17 @@ const SignupForm = () => {
 
   const SignupSchema = Yup.object().shape({
     username: Yup.string()
-      .required(t('signupForm.username.validation.required'))
-      .min(3, t('signupForm.username.validation.min'))
-      .max(20, t('signupForm.username.validation.max')),
+      .required('signupForm.username.validation.required')
+      .min(3, 'signupForm.username.validation.min')
+      .max(20, 'signupForm.username.validation.max'),
     password: Yup.string()
-      .required(t('signupForm.password.validation.required'))
-      .min(6, t('signupForm.password.validation.min')),
+      .required('signupForm.password.validation.required')
+      .min(6, 'signupForm.password.validation.min'),
     confirmPassword: Yup.string()
-      .required(t('signupForm.confirmPassword.validation.required'))
+      .required('signupForm.confirmPassword.validation.required')
       .oneOf(
         [Yup.ref('password'), null],
-        t('signupForm.confirmPassword.validation.confirmation'),
+        'signupForm.confirmPassword.validation.confirmation',
       ),
   });
 
@@ -95,7 +95,7 @@ const SignupForm = () => {
                 isInvalid={formik.errors.username || signupFailed}
               />
               <Form.Control.Feedback type="invalid">
-                {formik.errors.username}
+                {t(formik.errors.username)}
               </Form.Control.Feedback>
             </FloatingLabel>
           </Form.Group>
@@ -116,7 +116,7 @@ const SignupForm = () => {
                 isInvalid={formik.errors.password || signupFailed}
               />
               <Form.Control.Feedback type="invalid">
-                {formik.errors.password}
+                {t(formik.errors.password)}
               </Form.Control.Feedback>
             </FloatingLabel>
           </Form.Group>
@@ -139,7 +139,7 @@ const SignupForm = () => {
               <Form.Control.Feedback type="invalid">
                 {signupFailed
                   ? t('signupForm.signupFailed')
-                  : formik.errors.confirmPassword}
+                  : t(formik.errors.confirmPassword)}
               </Form.Control.Feedback>
             </FloatingLabel>
           </Form.Group>

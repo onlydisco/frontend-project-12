@@ -8,15 +8,9 @@ export default {
       header: 'Войти',
       username: {
         placeholder: 'Ваш ник',
-        validation: {
-          required: 'Обязательное поле для заполнения',
-        },
       },
       password: {
         placeholder: 'Пароль',
-        validation: {
-          required: 'Обязательное поле для заполнения',
-        },
       },
       authFailed: 'Неверные имя пользователя или пароль',
       submit: 'Войти',

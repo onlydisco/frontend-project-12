@@ -41,13 +41,10 @@ const RenameChannelModal = () => {
 
   const RenameChannelSchema = Yup.object().shape({
     name: Yup.string()
-      .required(t('modals.renameChannelModal.validation.required'))
-      .min(3, t('modals.renameChannelModal.validation.min'))
-      .max(20, t('modals.renameChannelModal.validation.max'))
-      .notOneOf(
-        channelsNames,
-        t('modals.renameChannelModal.validation.notOneOf'),
-      ),
+      .required('modals.renameChannelModal.validation.required')
+      .min(3, 'modals.renameChannelModal.validation.min')
+      .max(20, 'modals.renameChannelModal.validation.max')
+      .notOneOf(channelsNames, 'modals.renameChannelModal.validation.notOneOf'),
   });
 
   const formik = useFormik({
@@ -97,7 +94,7 @@ const RenameChannelModal = () => {
               isInvalid={formik.errors.name}
             />
             <Form.Control.Feedback type="invalid">
-              {formik.errors.name}
+              {t(formik.errors.name)}
             </Form.Control.Feedback>
           </Form.Group>
           <div className="d-flex justify-content-end">

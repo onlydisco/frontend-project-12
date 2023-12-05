@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
@@ -22,23 +21,11 @@ const LoginForm = () => {
     usernameInput.current.focus();
   }, []);
 
-  const LoginSchema = Yup.object().shape({
-    username: Yup.string().required(
-      t('loginForm.username.validation.required'),
-    ),
-    password: Yup.string().required(
-      t('loginForm.password.validation.required'),
-    ),
-  });
-
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
     },
-    validateOnBlur: false,
-    validateOnChange: false,
-    validationSchema: LoginSchema,
     onSubmit: async (values) => {
       setAuthFailed(false);
       try {
@@ -102,9 +89,11 @@ const LoginForm = () => {
                 value={formik.values.password}
                 isInvalid={authFailed}
               />
-              <Form.Control.Feedback type="invalid">
-                {t('loginForm.authFailed')}
-              </Form.Control.Feedback>
+              {authFailed && (
+                <Form.Control.Feedback type="invalid">
+                  {t('loginForm.authFailed')}
+                </Form.Control.Feedback>
+              )}
             </FloatingLabel>
           </Form.Group>
 

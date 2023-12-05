@@ -33,10 +33,10 @@ const AddChannelModal = () => {
 
   const AddChannelSchema = Yup.object().shape({
     name: Yup.string()
-      .required(t('modals.addChannelModal.validation.required'))
-      .min(3, t('modals.addChannelModal.validation.min'))
-      .max(20, t('modals.addChannelModal.validation.max'))
-      .notOneOf(channelsNames, t('modals.addChannelModal.validation.notOneOf')),
+      .required('modals.addChannelModal.validation.required')
+      .min(3, 'modals.addChannelModal.validation.min')
+      .max(20, 'modals.addChannelModal.validation.max')
+      .notOneOf(channelsNames, 'modals.addChannelModal.validation.notOneOf'),
   });
 
   const formik = useFormik({
@@ -86,7 +86,7 @@ const AddChannelModal = () => {
               isInvalid={formik.errors.name}
             />
             <Form.Control.Feedback type="invalid">
-              {formik.errors.name}
+              {t(formik.errors.name)}
             </Form.Control.Feedback>
           </Form.Group>
           <div className="d-flex justify-content-end">
