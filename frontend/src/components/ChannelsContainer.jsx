@@ -12,15 +12,11 @@ import {
   channelsSelectors,
   selectCurrentChannelId,
 } from '../slices/channelsInfoSlice.js';
-import {
-  actions as modalActions,
-  selectOpenModal,
-} from '../slices/modalSlice.js';
+import { actions as modalActions } from '../slices/modalSlice.js';
 import Modal from './modals/Modal.jsx';
 
 const ChannelsContainer = () => {
   const dispatch = useDispatch();
-  const modalIsOpened = useSelector(selectOpenModal);
   const channels = useSelector(channelsSelectors.selectAll);
   const currentChannelId = useSelector(selectCurrentChannelId);
   const { t } = useTranslation();
@@ -129,7 +125,7 @@ const ChannelsContainer = () => {
           </li>
         ))}
       </ul>
-      {modalIsOpened && <Modal />}
+      <Modal />
     </Col>
   );
 };

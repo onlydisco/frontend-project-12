@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import AddChannelModal from './AddChannelModal';
 import RenameChannelModal from './RenameChannelModal';
 import RemoveChannelModal from './RemoveChannelModal';
-import { selectModalType } from '../../slices/modalSlice';
+import { selectModalType, selectOpenModal } from '../../slices/modalSlice';
 
 const modals = {
   addChannel: AddChannelModal,
@@ -15,9 +15,11 @@ const getModal = (modalName) => modals[modalName];
 
 const Modal = () => {
   const modalType = useSelector(selectModalType);
+  const modalIsOpened = useSelector(selectOpenModal);
+
   const ModalComponent = getModal(modalType);
 
-  return <ModalComponent />;
+  return modalIsOpened ? <ModalComponent /> : null;
 };
 
 export default Modal;
