@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../contexts/AuthContext.js';
+import routes from '../routes.js';
 
 const AuthProvider = ({ children }) => {
   const currentUser = JSON.parse(localStorage.getItem('user'));
@@ -15,14 +16,14 @@ const AuthProvider = ({ children }) => {
       if (token) {
         localStorage.setItem('user', JSON.stringify({ token, username }));
         setUser({ username });
-        navigate('/');
+        navigate(routes.chatPagePath());
       }
     };
 
     const logOut = () => {
       localStorage.removeItem('user');
       setUser(null);
-      navigate('/login');
+      navigate(routes.loginPagePath());
     };
 
     const getAuthHeader = () => {

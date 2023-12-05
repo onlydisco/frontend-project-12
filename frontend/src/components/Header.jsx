@@ -5,6 +5,7 @@ import Container from 'react-bootstrap/Container';
 import { useTranslation } from 'react-i18next';
 import LogoutButton from './LogoutButton';
 import useAuth from '../hooks/useAuth';
+import routes from '../routes.js';
 
 const Header = () => {
   const { t } = useTranslation();
@@ -14,7 +15,7 @@ const Header = () => {
     <header>
       <Navbar className="shadow-sm bg-white position-static">
         <Container>
-          <Link className="navbar-brand focus-ring" to="/">
+          <Link className="navbar-brand focus-ring" to={routes.chatPagePath()}>
             {t('navbar.logo')}
           </Link>
           {auth.user && <LogoutButton />}

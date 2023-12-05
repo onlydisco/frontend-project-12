@@ -124,7 +124,7 @@ const LoginForm = () => {
             {t('loginForm.footer.question')}
             {' '}
           </span>
-          <Link to="/signup">{t('loginForm.footer.link')}</Link>
+          <Link to={routes.signupPagePath()}>{t('loginForm.footer.link')}</Link>
         </div>
       </Card.Footer>
     </Card>
