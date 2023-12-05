@@ -112,7 +112,7 @@ export default {
     },
     notFoundPage: {
       header: 'Страница не найдена',
-      description: 'Но вы можете перейти',
+      description: 'Но вы можете перейти ',
       link: 'на главную страницу',
     },
     notifications: {

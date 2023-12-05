@@ -10,9 +10,8 @@ const NotFoundPage = () => {
     <Container className="text-center">
       <h1 className="h4 text-muted">{t('notFoundPage.header')}</h1>
       <p className="text-muted">
-        Но вы можете перейти
-        {' '}
-        <Link to="/">на главную страницу</Link>
+        {t('notFoundPage.description')}
+        <Link to="/">{t('notFoundPage.link')}</Link>
       </p>
     </Container>
   );
